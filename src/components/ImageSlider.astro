@@ -1,0 +1,137 @@
+---
+
+---
+
+<script>
+  const slider = document.getElementById("image-slider") as HTMLDivElement;
+  const scrollPrev = document.getElementById("scroll-prev") as HTMLDivElement;
+  const scrollNext = document.getElementById("scroll-next") as HTMLDivElement;
+  const slideIndexEl = document.getElementById(
+    "slide-index",
+  ) as HTMLSpanElement;
+  const slideCountEl = document.getElementById(
+    "slide-count",
+  ) as HTMLSpanElement;
+
+  let slideIdx = -1;
+
+  let ignoreObserver = false;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (ignoreObserver) return;
+
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          const slides = document.querySelectorAll(".slide");
+          const newIdx = Array.from(slides).indexOf(entry.target as Element);
+          if (newIdx !== -1) {
+            updateSlideIdx(newIdx);
+          }
+        }
+      }
+    },
+    {
+      root: slider,
+      threshold: 0.8,
+    },
+  );
+
+  const updateSlideIdx = (newIdx: number) => {
+    setTimeout(() => {
+      ignoreObserver = false;
+    }, 300);
+    const slides = document.querySelectorAll(".slide-content");
+    slides[slideIdx]?.classList.remove("shadow-sm");
+    slideIdx = newIdx;
+    slideIndexEl.textContent = (slideIdx + 1).toString();
+    slides[slideIdx]?.classList.add("shadow-sm");
+  };
+
+  scrollPrev?.addEventListener("click", () => {
+    const slides = document.querySelectorAll(".slide");
+    const firstSlideWidth = slides?.[0]?.clientWidth;
+    if (slider && firstSlideWidth) {
+      ignoreObserver = true;
+      if (slideIdx <= 0) {
+        slider.scrollTo({ left: slider.scrollWidth, behavior: "smooth" });
+        updateSlideIdx(slides.length - 1);
+      } else {
+        slider.scrollBy({ left: -firstSlideWidth, behavior: "smooth" });
+        updateSlideIdx(slideIdx - 1);
+      }
+    }
+  });
+
+  scrollNext?.addEventListener("click", () => {
+    const slides = document.querySelectorAll(".slide");
+    const firstSlideWidth = slides?.[0]?.clientWidth;
+    if (slider && firstSlideWidth) {
+      ignoreObserver = true;
+      if (slideIdx >= slides.length - 1) {
+        slider.scrollTo({ left: -slider.scrollWidth, behavior: "smooth" });
+        updateSlideIdx(0);
+      } else {
+        slider.scrollBy({ left: firstSlideWidth, behavior: "smooth" });
+        updateSlideIdx(slideIdx + 1);
+      }
+    }
+  });
+
+  slider.addEventListener("image-added", () => {
+    const slides = document.querySelectorAll(".slide");
+    slider.scrollTo({ left: slider.scrollWidth, behavior: "smooth" });
+    updateSlideIdx(slides.length - 1);
+    slideCountEl.textContent = slides.length.toString();
+    observer.observe(slides[slides.length - 1]);
+  });
+</script>
+
+<div class="w-full h-3/4 flex flex-col">
+  <div class="w-full grow pt-4 flex items-center justify-between">
+    <div class="p-4 cursor-pointer" id="scroll-prev">
+      <svg
+        width="24"
+        height="24"
+        class="mx-auto pl-1 select-none"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="15" y1="6" x2="9" y2="12"></line>
+        <line x1="15" y1="18" x2="9" y2="12"></line>
+      </svg>
+    </div>
+    <div
+      id="image-slider"
+      class="w-full h-full mx-auto flex flex-nowrap justify-start items-center py-4 overflow-x-auto snap-x snap-mandatory scroll-smooth select-none"
+    >
+      <slot />
+    </div>
+    <div class="p-4 cursor-pointer" id="scroll-next">
+      <svg
+        width="24"
+        height="24"
+        class="mx-auto pr-1 select-none"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="9" y1="6" x2="15" y2="12"></line>
+        <line x1="9" y1="18" x2="15" y2="12"></line>
+      </svg>
+    </div>
+  </div>
+
+  <div class="w-32 mx-auto my-4 rounded-full bg-gray-200 dark:bg-gray-800 p-2 select-none">
+    <p class="text-center">
+      <span id="slide-index">0</span> of <span id="slide-count">0</span>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+---
+// Example image: https://dummyimage.com/800x400/000/fff
+---
+
+<script>
+  import type { SliderImage } from "./SliderImage";
+
+  const form = document.getElementById("image-form") as HTMLFormElement;
+  form?.addEventListener("submit", handleSubmit);
+
+  function handleSubmit(event: SubmitEvent) {
+    if (form) {
+      event.preventDefault();
+      const data = new FormData(form);
+      const payload = Object.fromEntries(data);
+      const imageUrl = payload.imageUrl as string;
+      if (!imageUrl) return;
+      const sliderImage = document.createElement("slider-image") as SliderImage;
+      const imageSlider = document.getElementById("image-slider");
+      const el = imageSlider?.appendChild(sliderImage);
+      el?.updateComplete.then(() => {
+        imageSlider?.dispatchEvent(new Event("image-added"));
+      });
+      sliderImage.src = imageUrl;
+      form.reset();
+    }
+  }
+</script>
+
+<form
+  id="image-form"
+  class="w-full max-w-sm mx-auto mt-8 p-6 rounded-lg shadow-md dark:bg-gray-800 bg-gray-100"
+>
+  <input
+    name="imageUrl"
+    value="https://dummyimage.com/800x400/000/fff"
+    placeholder="Enter image URL"
+    class="w-full p-2 border border-gray-300 rounded mb-4"
+  />
+  <button
+    type="submit"
+    class="w-full bg-indigo-500 text-white p-2 rounded hover:bg-indigo-600"
+  >
+    Add Image
+  </button>
+</form>

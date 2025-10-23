@@ -1,0 +1,17 @@
+{
+  "name": "image-slider",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.15",
+    "astro": "^5.14.6",
+    "lit": "^3.3.1",
+    "tailwindcss": "^4.1.15"
+  }
+}
