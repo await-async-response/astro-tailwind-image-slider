@@ -1,6 +1,8 @@
 # Image Slider
 
-## Testing
+Demo: https://await-async-response.github.io/astro-tailwind-image-slider/
+
+## Local Testing
 
 - Build the Dockerfile (image tag optional): `docker build . -t image-slider`
 - Copy the image ID from the list: `docker images`
