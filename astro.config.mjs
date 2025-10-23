@@ -11,4 +11,5 @@ export default defineConfig({
   
   site: 'https://await-async-response.github.io/astro-tailwind-image-slider/',
   outDir: './dist',
+  base: '/astro-tailwind-image-slider/'
 });
