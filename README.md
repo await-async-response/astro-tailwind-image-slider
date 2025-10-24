@@ -8,7 +8,7 @@ Demo: https://await-async-response.github.io/astro-tailwind-image-slider/
 
 - Build the Dockerfile (image tag optional): `docker build . -t image-slider`
 - Copy the image ID from the list: `docker images`
-- Create and run the docker container: `docker run <image-id> -p [::1]:3000:3000`
+- Create and run the docker container: `docker run -p [::1]:3000:3000 <image-id>`
 - Open http://localhost:3000 in browser
 
 ## 🧞 Commands
