@@ -1,5 +1,7 @@
 # Image Slider
 
+**NOTICE: This is part of a coding challenge and not suited for production use**
+
 Demo: https://await-async-response.github.io/astro-tailwind-image-slider/
 
 ## Local Testing
@@ -21,4 +23,3 @@ All commands are run from the root of the project, from a terminal:
 | `npm run preview`         | Preview your build locally, before deploying     |
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
-P
